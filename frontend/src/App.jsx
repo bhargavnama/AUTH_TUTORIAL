@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import DashBoardPage from './pages/DashBoardPage';
+import LoadingSpinner from "./components/LoadingSpinner";
 
 //Protect routes that require authentication
 const ProtectedRoutes = ({ children }) => {
@@ -39,6 +40,8 @@ function App() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+  
+  if(isCheckingAuth) return <LoadingSpinner />;
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden">
       <FloatingShape
