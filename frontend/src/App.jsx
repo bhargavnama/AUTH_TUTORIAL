@@ -7,8 +7,10 @@ import FloatingShape from "./components/floatingShape";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
-import DashBoardPage from './pages/DashBoardPage';
+import DashBoardPage from "./pages/DashBoardPage";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 //Protect routes that require authentication
 const ProtectedRoutes = ({ children }) => {
@@ -35,13 +37,13 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
+  const { isCheckingAuth, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  
-  if(isCheckingAuth) return <LoadingSpinner />;
+
+  if (isCheckingAuth) return <LoadingSpinner />;
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden">
       <FloatingShape
@@ -67,11 +69,14 @@ function App() {
       />
 
       <Routes>
-        <Route path="/" element={
-          <ProtectedRoutes>
-            <DashBoardPage />
-          </ProtectedRoutes>
-        } />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoutes>
+              <DashBoardPage />
+            </ProtectedRoutes>
+          }
+        />
         <Route
           path="/signup"
           element={
@@ -89,6 +94,19 @@ function App() {
           }
         />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
+        <Route
+          path="/forgot-password"
+          element={
+            <RedirectAuthenticatedUser>
+              <ForgotPasswordPage />
+            </RedirectAuthenticatedUser>
+          }
+        />
+        <Route path="reset-password/:token" element={
+          <RedirectAuthenticatedUser>
+            <ResetPasswordPage />
+          </RedirectAuthenticatedUser>
+        }/>
       </Routes>
 
       <Toaster />
